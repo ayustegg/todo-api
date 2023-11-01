@@ -2,13 +2,9 @@ const express = require('express')
 const v1TodoRouter = require('./v1/routes/todoRoutes.js')
 const app = express()
 const cors = require('cors')
-const port = process.env.PORT || 9000
-const corsOptions = {
-  origin: 'http://85.136.160.86',
-  optionsSuccessStatus: 200 // Algunas versiones de CORS requieren esto
-}
+const port = process.env.PORT || 3000
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(express.json())
 app.use(cors())
