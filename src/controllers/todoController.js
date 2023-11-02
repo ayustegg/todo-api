@@ -2,59 +2,65 @@ const todoService = require('../services/todoService')
 // el controlador es el que se encarga de manejar la logica de la peticion
 
 // metodo que se ejecuta cuando se hace una peticion get a la ruta /api/v1/toDo
-const getAllTodo = (req, res) => {
-  res.send({ todos: todoService.getAllTodos() })
+const getAllTodo = async (req, res) => {
+  try {
+    const todos = await todoService.getAllTodo()
+    res.json(todos)
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener elementos "todo"' })
+  }
 }
-const getOneTodo = (req, res) => {
-  const { id } = req.params
-  const todo = todoService.getOneTodoById(id)
-  if (!todo) {
-    return res.status(404).send({ status: 'ERROR', message: 'Todo not found' })
+const getTodoById = async (req, res) => {
+  const todoId = req.params.id // Obtiene el _id del elemento desde la ruta
+  try {
+    const todo = await todoService.getTodoById(todoId)
+    if (!todo) {
+      res.status(404).json({ error: 'El elemento "todo" no se encontró en la base de datos' })
+    } else {
+      res.json(todo)
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al buscar el elemento "todo"' })
   }
-  res.send({ status: 'OK', data: todo })
-}
-
-const createNewTodo = (req, res) => {
-  const { body } = req
-  if (!body.title) {
-    return res.status(400).send({ status: 'ERROR', message: 'Missing title' })
-  }
-  const todo = {
-    title: body.title
-  }
-
-  const newTodo = todoService.createNewTodo(todo)
-  if (!newTodo) {
-    return res.status(500).send({ status: 'ERROR', message: 'Internal server error' })
-  }
-  res.send({ status: 'OK', data: newTodo })
 }
 
-const deleteOneTodo = (req, res) => {
-  const { id } = req.params
-  console.log(id)
-  const todoEliminated = todoService.deleteOneTodoById(id)
-  if (!todoEliminated) {
-    return res.status(500).send({ status: 'ERROR', message: 'Todo not found' })
+const deleteTodo = async (req, res) => {
+  const todoId = req.params.id // Obtiene el _id del elemento desde la ruta
+  try {
+    const deletedTodo = await todoService.deleteTodoById(todoId)
+    if (!deletedTodo) {
+      res.status(404).json({ error: 'El elemento "todo" no se encontró en la base de datos' })
+    } else {
+      res.json(deletedTodo)
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar el elemento "todo"' })
   }
-  res.send({ status: 'OK', message: `Deleted todo with id ${id}` })
 }
 
-const updateOneTodo = (req, res) => {
-  const id = req.params.id
-  const { body } = req
-  if (!body.title) {
-    return res.status(404).send({ status: 'ERROR', message: 'Title is not Found' })
+const updateTodoTitle = async (req, res) => {
+  const todoId = req.params.id // Obtiene el _id del elemento desde la ruta
+  const newTitle = req.body.title // Obtiene el nuevo título desde el cuerpo de la solicitud
+  try {
+    const updatedTodo = await todoService.updateTodoTitleById(todoId, newTitle)
+    if (!updatedTodo) {
+      res.status(404).json({ error: 'El elemento "todo" no se encontró en la base de datos' })
+    } else {
+      res.json(updatedTodo)
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar el título del elemento "todo"' })
   }
-  const todo = {
-    id,
-    title: body.title
-  }
-  const todoUpdated = todoService.updateOneTodoById(todo)
-  if (!todoUpdated) {
-    return res.status(404).send({ status: 'ERROR', message: 'Todo not found' })
-  }
-  res.send({ status: 'OK', data: todoUpdated })
 }
 
-module.exports = { getAllTodo, getOneTodo, createNewTodo, deleteOneTodo, updateOneTodo }
+const createTodo = async (req, res) => {
+  const todoData = req.body // Supongamos que los datos se envían en el cuerpo de la solicitud
+  try {
+    const createdTodo = await todoService.createTodo(todoData)
+    res.json(createdTodo)
+  } catch (error) {
+    res.status(500).json({ error: 'Error al crear el elemento "todo"' })
+  }
+}
+
+module.exports = { getAllTodo, getTodoById, deleteTodo, updateTodoTitle, createTodo }

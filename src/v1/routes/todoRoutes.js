@@ -6,9 +6,9 @@ const todoController = require('../../controllers/todoController')
 // llama al controller dependiendo del metodo http
 router
   .get('/', todoController.getAllTodo)
-  .get('/:id', todoController.getOneTodo)
-  .post('/', todoController.createNewTodo)
-  .patch('/:id', todoController.updateOneTodo)
-  .delete('/:id', todoController.deleteOneTodo)
+  .get('/:id', todoController.getTodoById)
+  .post('/', todoController.createTodo)
+  .patch('/:id', todoController.updateTodoTitle)
+  .delete('/:id', todoController.deleteTodo)
 
 module.exports = router
