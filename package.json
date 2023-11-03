@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-"build": "npm install",
+    "build": "npm install",
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,10 +21,16 @@
     "nodemon": "3.0.1"
   },
   "dependencies": {
-    "cors": "^2.8.5",
+    "@hapi/joi": "17.1.1",
+    "bcrypt": "5.1.1",
+    "cors": "2.8.5",
+    "dotenv": "16.3.1",
     "express": "4.18.2",
+    "jsonwebtoken": "9.0.2",
+    "mongo": "^0.1.0",
     "mongodb": "6.2.0",
-    "mongoose": "^8.0.0",
+    "mongoose": "8.0.0",
+    "resend": "2.0.0",
     "uuid": "9.0.1"
   }
 }
