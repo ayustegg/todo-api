@@ -7,11 +7,7 @@ const cors = require('cors')
 const port = process.env.PORT || 3000
 const dbURI = 'mongodb+srv://ayuste:rootayuste@ayustegg.pee5oql.mongodb.net/?retryWrites=true&w=majority'
 
-const corsOptions = {
-  origin: 'http://35.181.53.241'
-}
-
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(express.json())
 
