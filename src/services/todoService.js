@@ -11,9 +11,9 @@ const updateTodoTitleById = async (todoId, newTitle) => {
   }
 }
 
-const createTodo = async (todoData) => {
+const createTodo = async (todoData, userId) => {
   try {
-    const newTodo = new Todo(todoData)
+    const newTodo = new Todo(todoData, userId)
     const createdTodo = await newTodo.save()
     return createdTodo
   } catch (error) {
@@ -21,9 +21,9 @@ const createTodo = async (todoData) => {
   }
 }
 
-const getAllTodo = async () => {
+const getAllTodo = async (userId) => {
   try {
-    const todos = await Todo.find()
+    const todos = await Todo.find({ user: userId })
     return todos
   } catch (error) {
     throw new Error('Error al obtener elementos "todo" desde la base de datos')

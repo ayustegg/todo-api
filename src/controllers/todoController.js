@@ -3,8 +3,9 @@ const todoService = require('../services/todoService')
 
 // metodo que se ejecuta cuando se hace una peticion get a la ruta /api/v1/toDo
 const getAllTodo = async (req, res) => {
+  const userId = req.user.id
   try {
-    const todos = await todoService.getAllTodo()
+    const todos = await todoService.getAllTodo(userId)
     res.json(todos)
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener elementos "todo"' })
@@ -54,7 +55,10 @@ const updateTodoTitle = async (req, res) => {
 }
 
 const createTodo = async (req, res) => {
-  const todoData = req.body // Supongamos que los datos se envían en el cuerpo de la solicitud
+  const todoData = req.body
+  const userId = req.user.id
+  todoData.user = userId
+  console.log(todoData)
   try {
     const createdTodo = await todoService.createTodo(todoData)
     res.json(createdTodo)
